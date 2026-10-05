@@ -7,6 +7,8 @@ import com.aniruddha.draftai.repository.DocumentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class DocumentService {
@@ -41,12 +43,16 @@ public class DocumentService {
         return Document.builder().title(dto.getTitle()).content(dto.getContent()).build();
     }
 
-    public DocumentResponseDTO toDTO(Document document){
+    public static DocumentResponseDTO toDTO(Document document){
         DocumentResponseDTO dto = new DocumentResponseDTO();
         dto.setId(document.getId());
         dto.setTitle(document.getTitle());
         dto.setContent(document.getContent());
         dto.setLastUpdated(document.getLastUpdated());
         return dto;
+    }
+
+    public List<DocumentResponseDTO> getAllDocuments(){
+        return documentRepository.findAll().stream().map(DocumentService::toDTO).toList();
     }
 }
